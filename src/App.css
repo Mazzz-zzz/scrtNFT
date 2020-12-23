@@ -1,0 +1,78 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 3vh;
+  max-height: 8vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.NavBar {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  width: 100vw;
+}
+
+.NavElem {
+  border-style: solid;
+  border-width: 2px;
+  padding: 5px 15px;
+  margin: 4px;
+  background-color: rgba(231, 197, 61, 0.603);
+  border-radius: 9px;
+}
+.UpInput {
+
+}
+.NFTContainer {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.NFTElem {
+  width: 30vw;
+  height: 40vh;
+  border-style: solid;
+  border-radius: 2px;
+  margin: 5px;
+}
+.PopupBase {
+  display: block;
+  position: fixed;
+  width: 80vw;
+  height: 80vh;
+  background-color: rgb(255, 166, 50);
+  left: 10vw;
+  top: 10vh;
+  z-index: 100;
+}
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+.BackgroundInactive {
+  filter: blur(10px);
+  pointer-events: none;
+}
+.closebtn {
+  width: 5vw;
+  height: 5vh;
+  position: fixed;
+  left: 85vw;
+  top: 12vh;
+}
