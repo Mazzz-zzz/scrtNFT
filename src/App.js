@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Canvas, useFrame } from 'react-three-fiber';
+//import { Canvas, useFrame } from 'react-three-fiber';
 import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 var classNames = require('classnames');

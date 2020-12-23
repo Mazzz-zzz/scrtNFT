@@ -1,3 +1,6 @@
+WIP - A platform  for secret NFT's using the scrt blockchain.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
