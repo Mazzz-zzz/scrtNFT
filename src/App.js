@@ -61,6 +61,18 @@ function SetUpPreview (geo, renderer) {
   }
   animate();
 }
+class NFTElement {
+  constructor(name, owner, price, pubdata) {
+    this.name = name;
+    this.owner = owner;
+    this.price = price;
+    this.pubdata = pubdata;
+  }
+  upload(privdata) {
+    console.log("UploadHere");
+  }
+
+}
 
 function App() {
   var onChangeHandler= (event) => {
@@ -111,7 +123,27 @@ function App() {
     <div className="App">
       <div className={HelpClass}>
         <h2>What is this?</h2>
-        <p>Insert stuff here</p>
+        <p>
+          scrt NFT hub is an open source and a continuously evolving NFT platform that 
+          aims to explore new ways of using and accessing Non-fungible tokens.
+          <br></br><br></br>
+          Initially the focus is for allowing visualisation and trading of files without 
+          revealing their exact contents. This opens up the door to putting 3D files, art, music ect 
+          onto the blockchain without ways to superficially duplicate them (ie you can't right click
+          and save images) as the files displayed would either be hidden or a lower quality
+          representation such as more pixelated images, noisy audio or 3D files represented as
+          static images.
+        </p>
+        <br></br>
+        <p>This project is currently a work in progress and a proof of concept 
+          It currently only works with .stl 3D files, more filetypes will be supported in the future.
+        </p>
+        <p>
+          Made with love By Mazzz
+        </p>
+        <a href="https://github.com/Mazzz-zzz/scrtNFT" i>
+          <img src="GitHubLogo32px.png"></img>
+        </a>
         <img className="closebtn" src="cancel.svg" onClick={closeWindow}></img>
       </div>
       <div className={UploadClass}>
@@ -123,7 +155,7 @@ function App() {
       </div>
       <div className={BackgroundInactive}>
         <header className="App-header">
-          <h1>SCRT . FUN</h1>
+          <h1>SCRT NFT HUB</h1>
         </header>
         <div className="NavBar">
           <div className="NavElem" onClick={openWindow}>
