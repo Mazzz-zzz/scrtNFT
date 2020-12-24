@@ -1,7 +1,7 @@
 import './App.css';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, Component, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-//import { Canvas, useFrame } from 'react-three-fiber';
+import { Canvas, useFrame, useLoader } from 'react-three-fiber';
 import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 var classNames = require('classnames');
@@ -35,84 +35,49 @@ async function main() {
 
   console.log(`Count=${response.count}`)
 }
-main();
+//main();
 
 
-
-/*loader.load( './Rubber_Duck.stl', function ( geometry ) {
-  const object = new THREE.Mesh( geometry, material );
-  scene.add( object );
-  const box = new THREE.BoxHelper( object, 0xffff00 );
-  scene.add( box );
-});
-*/
-
-/*function animate() {
-  requestAnimationFrame( animate );
-
-  //scene.rotation.x += 0.01;
-  scene.rotation.y += 0.01;
-  
-	renderer.render( scene, camera );
-}
-animate();
-*/
-
-
-var onChangeHandler= (event) => {
-  //
-  var loader = new STLLoader();
+function SetUpPreview (geo, renderer) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  document.body.appendChild( renderer.domElement );
+  renderer.setSize( window.innerWidth/2.2, window.innerHeight/2.2 );
   const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
   camera.position.z = 150;
   //
-  var fileObject = event.target.files[0];
-    var reader = new FileReader();
-    reader.onload = function ()
-    {
-        var loader = new STLLoader();
-        console.log(this.result);
-        var geometry = loader.parse(this.result);
-        var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-        var mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-        const box = new THREE.BoxHelper( mesh, 0xffff00 );
-        scene.add( box );
-        function animate() {
-          requestAnimationFrame( animate );
-        
-          //scene.rotation.x += 0.01;
-          scene.rotation.y += 0.01;
-          
-          renderer.render( scene, camera );
-        }
-        animate();
-    };
-    
-    reader.readAsArrayBuffer(fileObject)
-  //
-
-
-
-  /*loader.load( 'Rubber_Duck.stl', function ( geometry ) {
-    const object = new THREE.Mesh( geometry, material );
-    scene.add( object );
-    const box = new THREE.BoxHelper( object, 0xffff00 );
-    scene.add( box );
-  });
-  */
+  console.log(geo);
+  //var geometry = loader.parse(res);
+  var mesh = new THREE.Mesh(geo, material);
+  scene.add(mesh);
+  const box = new THREE.BoxHelper( mesh, 0xffff00 );
+  scene.add( box );
+  function animate() {
+    requestAnimationFrame( animate );
   
-
-};
-
-
+    //scene.rotation.x += 0.01;
+    scene.rotation.y += 0.01;
+    
+    renderer.render( scene, camera );
+  }
+  animate();
+}
 
 function App() {
+  var onChangeHandler= (event) => {
+    var fileObject = event.target.files[0];
+      var reader = new FileReader();
+      reader.onload = function ()
+      {
+        var loader = new STLLoader();
+        var geometry = loader.parse(this.result);
+        const renderer = new THREE.WebGLRenderer();
+        cubeRef.current.appendChild(renderer.domElement)
+        SetUpPreview(geometry, renderer)
+      };
+    reader.readAsArrayBuffer(fileObject)
+  };
+
+  //
   var openWindow = (event) => {
     if (event.target.innerText == "Help") {
       setHelpHid(false)
@@ -141,7 +106,7 @@ function App() {
     PopupBase: true,
     hidden: UploadHid == true
   });
-
+  const cubeRef = useRef(null);
   return (
     <div className="App">
       <div className={HelpClass}>
@@ -153,7 +118,7 @@ function App() {
         <h2>Upload NFT</h2>
         <p>Info about uploading</p>
         <input className="UpInput" type="file" name="file" onChange={onChangeHandler}/>
-        <div>Preview container</div>
+        <div ref={cubeRef} className="PreviewBox"></div>
         <img className="closebtn" src="cancel.svg" onClick={closeWindow}></img>
       </div>
       <div className={BackgroundInactive}>

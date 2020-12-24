@@ -76,3 +76,8 @@
   left: 85vw;
   top: 12vh;
 }
+.PreviewBox {
+  justify-content: center;
+  display: flex;
+  padding: 20px;
+}
