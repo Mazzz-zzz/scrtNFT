@@ -40,22 +40,34 @@ async function main() {
 
 function SetUpPreview (geo, renderer) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  renderer.setSize( window.innerWidth/2.2, window.innerHeight/2.2 );
-  const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-  camera.position.z = 150;
+  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 10, 2000 );
+  
+  const material = new THREE.MeshBasicMaterial( {color: 0x00ff00, opacity: 0.5, transparent: true} );
+  //camera.position.z = 150;
   //
-  console.log(geo);
   //var geometry = loader.parse(res);
   var mesh = new THREE.Mesh(geo, material);
   scene.add(mesh);
+  console.log(geo);
+  geo.computeBoundingSphere();
+  geo.computeBoundingBox();
+  console.log(geo.boundingSphere.radius);
+  var campos = geo.boundingSphere.radius*2.5;
+  camera.position.z = campos;
+  scene.rotation.x -= Math.PI/2;
   const box = new THREE.BoxHelper( mesh, 0xffff00 );
   scene.add( box );
+  //
+  const light = new THREE.PointLight( 0xff0000, 10, 0, 1 );
+  light.position.set( 0, 0, campos );
+  scene.add( light );
+
   function animate() {
     requestAnimationFrame( animate );
   
-    //scene.rotation.x += 0.01;
-    scene.rotation.y += 0.01;
+    scene.rotation.z += 0.01;
+    scene.rotation.x += 0.001;
+    scene.rotation.y += 0.001;
     
     renderer.render( scene, camera );
   }
@@ -90,17 +102,19 @@ class NFTPreview extends React.Component {
     this.myRef = React.createRef();
   }
   componentDidMount() {
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth/4, window.innerHeight/4 );
+    this.myRef.current.appendChild(renderer.domElement);
     var loader = new STLLoader();
     loader.load(this.url, function (geo) {
-      console.log(geo)
-      console.log("loaded?")
+      SetUpPreview(geo, renderer)
+
     });
-    const renderer = new THREE.WebGLRenderer();
-    this.myRef.current.appendChild(renderer.domElement);
+    
   }
 
   render() {
-    return <div ref={this.myRef}></div>
+    return <div ref={this.myRef} className="PreviewBox"></div>
   }
 }
 
@@ -113,7 +127,8 @@ function App() {
         var loader = new STLLoader();
         var geometry = loader.parse(this.result);
         const renderer = new THREE.WebGLRenderer();
-        cubeRef.current.appendChild(renderer.domElement)
+        cubeRef.current.appendChild(renderer.domElement);
+        renderer.setSize( window.innerWidth/2.2, window.innerHeight/2.2 );
         SetUpPreview(geometry, renderer)
       };
     reader.readAsArrayBuffer(fileObject)
@@ -135,9 +150,13 @@ function App() {
     setBackgroundInactive('');
 
   };
-  let NFT1 = new NFTElement("test1", "0x0address1", "3 wETH", "","test1.stl");
-  let NFT2 = new NFTElement("test2", "0x0address2", "9 wETH", "","test2.stl");
-  const elements = [NFT1, NFT2];
+  let NFT1 = new NFTElement("cat", "secret0x0address1", "3 wETH", "","cat.stl");
+  let NFT2 = new NFTElement("test2", "secretrndmwallt", "9 wETH", "","test2.stl");
+  let NFT3 = new NFTElement("deer", "secret127zy0v4k8r8fg325ql2yz2t32ku4va", "10 SCRT", "","deer.stl");
+  let NFT4 = new NFTElement("dog", "secret127jdafgksajsknmgnanngnmsanfnfs", "0.003 wBTC", "","dog.stl");
+  let NFT5 = new NFTElement("da kang", "secret48338fsfjsh4jw4nbfjsfjn4f4jf", "0.001 wETH", "","kang.stl");
+  let NFT6 = new NFTElement("Eli the Elephant", "secret48338fsfjsh4jw4nbfjsfjn4f4jf", "5 SCRT", "","ele.stl");
+  const elements = [NFT1, NFT2, NFT3, NFT4, NFT5, NFT6];
   const [HelpHid, setHelpHid] = useState(true);
   const [UploadHid, setUploadHid] = useState(true);
   const [BackgroundInactive, setBackgroundInactive] = useState('');
@@ -187,7 +206,7 @@ function App() {
       </div>
       <div className={BackgroundInactive}>
         <header className="App-header">
-          <h1>SCRT NFT HUB</h1>
+          <h1>>SCRT_NFT_HUB</h1>
         </header>
         <div className="NavBar">
           <div className="NavElem" onClick={openWindow}>
@@ -207,10 +226,13 @@ function App() {
           {elements.map((value, index) => {
             return (
             <div key={index} className="NFTElem">
-              <div>{value.name}</div>
-              <div>{value.owner}</div>
-              <div>{value.price}</div>
+              <div className="NFTName">{value.name}</div>
+              <div className="NFTPrice">{value.price}</div>
               <NFTPreview url={value.tempurl}></NFTPreview>
+              <div className="NFTLow">
+                <div className="NFTInfo">Info</div>
+                <div className="NFTBuy">Buy</div>
+              </div>
             </div>
             )}
             )}
