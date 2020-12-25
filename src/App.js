@@ -61,17 +61,47 @@ function SetUpPreview (geo, renderer) {
   }
   animate();
 }
+
+
+
+
 class NFTElement {
-  constructor(name, owner, price, pubdata) {
+  constructor(name, owner, price, pubdata, tempurl) {
     this.name = name;
     this.owner = owner;
     this.price = price;
-    this.pubdata = pubdata;
+    this.tempurl = tempurl;
+    var loader = new STLLoader();
+    loader.load(tempurl, function (geometry) {
+      this.pubdata = geometry;
+
+    })
   }
   upload(privdata) {
     console.log("UploadHere");
   }
 
+}
+class NFTPreview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.url = props.url;
+    console.log(this.url);
+    this.myRef = React.createRef();
+  }
+  componentDidMount() {
+    var loader = new STLLoader();
+    loader.load(this.url, function (geo) {
+      console.log(geo)
+      console.log("loaded?")
+    });
+    const renderer = new THREE.WebGLRenderer();
+    this.myRef.current.appendChild(renderer.domElement);
+  }
+
+  render() {
+    return <div ref={this.myRef}></div>
+  }
 }
 
 function App() {
@@ -105,7 +135,9 @@ function App() {
     setBackgroundInactive('');
 
   };
-  const elements = ['here', 'come', 'nfts', 'for', 'placeholder'];
+  let NFT1 = new NFTElement("test1", "0x0address1", "3 wETH", "","test1.stl");
+  let NFT2 = new NFTElement("test2", "0x0address2", "9 wETH", "","test2.stl");
+  const elements = [NFT1, NFT2];
   const [HelpHid, setHelpHid] = useState(true);
   const [UploadHid, setUploadHid] = useState(true);
   const [BackgroundInactive, setBackgroundInactive] = useState('');
@@ -173,8 +205,15 @@ function App() {
         </div>
         <div className="NFTContainer">
           {elements.map((value, index) => {
-            return <div className="NFTElem" key={index}>{value}</div>
-          })}
+            return (
+            <div key={index} className="NFTElem">
+              <div>{value.name}</div>
+              <div>{value.owner}</div>
+              <div>{value.price}</div>
+              <NFTPreview url={value.tempurl}></NFTPreview>
+            </div>
+            )}
+            )}
         </div>
       </div>
     </div>
