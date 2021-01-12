@@ -256,11 +256,11 @@ class Home extends React.Component {
             Secret NFT Hub
           </div>
           <nav>
-            test
+            Nav is here
           </nav>
         </header>
         <div>
-          Body
+          Quick explainer
         </div>
       </div>
     )
@@ -268,7 +268,7 @@ class Home extends React.Component {
 }
 
 
-function App1() {
+/*function App1() {
   return(
     <Router>
     <Switch>
@@ -277,5 +277,5 @@ function App1() {
     </Switch>
     </Router>
   )
-}
-export default App1;
+}*/
+export default App;
