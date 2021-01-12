@@ -4,6 +4,12 @@ import ReactDOM from 'react-dom';
 import { Canvas, useFrame, useLoader } from 'react-three-fiber';
 import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 var classNames = require('classnames');
 
 const {
@@ -206,7 +212,7 @@ function App() {
       </div>
       <div className={BackgroundInactive}>
         <header className="App-header">
-          <h1>>SCRT_NFT_HUB</h1>
+          <h1>SCRT_NFT_HUB</h1>
         </header>
         <div className="NavBar">
           <div className="NavElem" onClick={openWindow}>
@@ -241,4 +247,35 @@ function App() {
     </div>
   );
 }
-export default App;
+class Home extends React.Component {
+  render () {
+    return (
+      <div className="App">
+        <header>
+          <div className="App-header">
+            Secret NFT Hub
+          </div>
+          <nav>
+            test
+          </nav>
+        </header>
+        <div>
+          Body
+        </div>
+      </div>
+    )
+  }
+}
+
+
+function App1() {
+  return(
+    <Router>
+    <Switch>
+      <Route path="/app" component={App}></Route>
+      <Route path="/" component={Home}></Route>
+    </Switch>
+    </Router>
+  )
+}
+export default App1;
